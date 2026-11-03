@@ -23,7 +23,17 @@ export function Reveal({ as: Tag = 'div', className = '', delay = 0, children, .
       { threshold: 0.1 },
     );
     io.observe(el);
-    return () => io.disconnect();
+
+    // Fail-safe: content already on screen at load must never stay hidden,
+    // even if the observer callback is delayed or never fires.
+    let timer;
+    if (el.getBoundingClientRect().top < window.innerHeight) {
+      timer = window.setTimeout(() => setShown(true), 600);
+    }
+    return () => {
+      io.disconnect();
+      window.clearTimeout(timer);
+    };
   }, []);
 
   return (
