@@ -106,5 +106,16 @@ describe('structure', () => {
     for (const o of OLD) expect(text).not.toContain(o);
     // The CV also follows the no-statistics rule.
     expect(text).not.toMatch(/\b\d{1,3}(,\d{3})+\b|\b\d+\s?ms\b|median|lookups|five weeks|Live internal/i);
+    // The CV carries the portfolio headline and covers every skill area.
+    const flat = text.replace(/\s+/g, ' ');
+    expect(flat).toContain(SITE.headline);
+    for (const k of ['AI receptionist', 'workflow automation', 'B2B lead generation', 'email outreach', 'website development', 'Meta Ads', 'social media management', 'content creation', 'video editing']) {
+      expect(flat.toLowerCase(), `CV should mention ${k}`).toContain(k.toLowerCase());
+    }
+    expect(flat).toContain('aibookingsystems@gmail.com');
+    expect(flat).toContain('linkedin.com/in/sando-aleksanders-34b870375');
+    expect(flat).toMatch(/not an accredited university degree/);
+    expect(flat).not.toMatch(/\b\d+(\.\d+)?\s?(%|emails|clients|customers|leads|calls)\b/i);
+    expect(flat).not.toMatch(/guarantee|\bROI\b|testimonial|degree in|certified|\bLtd\b/i);
   });
 });
