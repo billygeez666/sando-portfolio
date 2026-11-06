@@ -25,10 +25,8 @@ npm run check      # tests + production build + build verification
 - Education is professional training, not an accredited degree. NONSTOP AI experience is shown separately and is not employment history.
 - No customer names, credentials, private databases or internal IDs appear on the site.
 
-## Before going live (open items)
+## Deployment
 
-1. Personal number is +44 7923 896954 (site, tel: link and CV). +44 7360 266496 belongs to the separate NONSTOP AI business site and must not appear here.
-2. Add a social-share image (`og:image`) if wanted.
-3. Replace the live site only after explicit approval (canonical, OG and JSON-LD URLs already point at `sando-aleksanders.netlify.app`).
+Netlify build settings and security headers are in `netlify.toml`. The CV (`public/Sando-Aleksanders-CV.pdf`), evidence images and social-share image are served from `public/`, so the site has no dependency on any other deployment.
 
-CV and evidence images are served from `public/` (no dependency on any other site).
+No secrets, API keys, customer data or private systems are in this repository. The project descriptions are summaries only, and the evidence images show aggregate figures and made-up example businesses.

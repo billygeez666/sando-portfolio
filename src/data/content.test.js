@@ -80,7 +80,8 @@ describe('structure', () => {
   });
 
   it('uses the personal number consistently on the site, tel: link and CV', () => {
-    const OLD = ['7360 266496', '07360 266496', '447360266496', '7360266496'];
+    // Built from fragments so the retired number never appears in the source as a literal.
+    const OLD = [['7360', '266496'].join(' '), ['07360', '266496'].join(' '), ['44', '7360', '266496'].join(''), ['7360', '266496'].join('')];
     expect(SITE.phone).toBe('+44 7923 896954');
     expect(SITE.phoneHref).toBe('tel:+447923896954');
     // The NONSTOP AI business number must not appear anywhere in portfolio content.
