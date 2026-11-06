@@ -91,7 +91,7 @@ export function Chip({ children }) {
   );
 }
 
-export function ButtonLink({ href, variant = 'primary', children, external = false, download = false, ...rest }) {
+export function ButtonLink({ href, variant = 'primary', children, external = false, download = false, className = '', ...rest }) {
   const base =
     'inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors';
   const styles =
@@ -101,7 +101,7 @@ export function ButtonLink({ href, variant = 'primary', children, external = fal
   return (
     <a
       href={href}
-      className={`${base} ${styles}`}
+      className={`${base} ${styles} ${className}`}
       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       {...(download ? { download: true } : {})}
       {...rest}
