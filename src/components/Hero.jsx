@@ -52,7 +52,8 @@ export default function Hero() {
           <h1 id="hero-title" className="text-5xl font-bold leading-[1.05] sm:text-6xl">
             {SITE.name}
           </h1>
-          <p className="mt-4 font-display text-lg font-medium text-accent-soft sm:text-xl" aria-label={SITE.headline}>
+          <p className="mt-4 font-display text-lg font-medium text-accent-soft sm:text-xl">
+            <span className="sr-only">{SITE.headline}</span>
             {SITE.headlineParts.map((part, i) => (
               <span key={part} aria-hidden="true">
                 {i > 0 && <span className="mx-2 text-line">|</span>}

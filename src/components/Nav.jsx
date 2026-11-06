@@ -25,7 +25,7 @@ export default function Nav() {
       </a>
       <header className="sticky top-0 z-40 border-b border-line bg-bg/80 backdrop-blur">
         <nav aria-label="Primary" className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <a href="#top" className="font-display text-sm font-semibold text-white">
+          <a href="#top" className="inline-flex min-h-11 items-center font-display text-sm font-semibold text-white">
             Sando Aleksanders
           </a>
 

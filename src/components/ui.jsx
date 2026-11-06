@@ -96,7 +96,7 @@ export function ButtonLink({ href, variant = 'primary', children, external = fal
     'inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors';
   const styles =
     variant === 'primary'
-      ? 'bg-accent text-white hover:bg-[#4a7fff]'
+      ? 'bg-[#2a5fe8] text-white hover:bg-[#2252d0]'
       : 'border border-line text-white hover:border-accent-soft hover:bg-surface';
   return (
     <a
