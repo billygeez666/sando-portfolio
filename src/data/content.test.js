@@ -67,11 +67,14 @@ describe('structure', () => {
   it('presents training accurately and keeps dates separate', () => {
     expect(EDUCATION.items[0].period).toBe('2023 – Present');
     expect(EDUCATION.note).toMatch(/not an accredited university degree/);
+    expect(EDUCATION.experience.period).toBe('From May 2024');
     expect(EDUCATION.experience.period).not.toBe(EDUCATION.items[0].period);
   });
 
   it('uses https for external links and the exact headline', () => {
-    for (const u of [SITE.linkedin, SITE.instagram, SITE.company, SITE.cvUrl]) expect(u.startsWith('https://')).toBe(true);
+    for (const u of [SITE.linkedin, SITE.instagram, SITE.company]) expect(u.startsWith('https://')).toBe(true);
+    expect(SITE.cvUrl.startsWith('/')).toBe(true); // served locally, not from another site
+    expect(SITE.assetBase).toBe('');
     expect(SITE.headline).toBe('AI Automation | B2B Lead Generation | Web Development | Digital Marketing');
   });
 });

@@ -17,10 +17,9 @@ export const SITE = {
   instagram: 'https://www.instagram.com/nonstopai_uk/',
   company: 'https://nonstopai.netlify.app',
   canonical: LIVE_ORIGIN + '/',
-  // TODO(before go-live): copy the CV PDF and /evidence/*.webp into /public and
-  // set these to relative paths. Until then they point at the current live site.
-  cvUrl: LIVE_ORIGIN + '/Sando-Aleksanders-CV.pdf',
-  assetBase: LIVE_ORIGIN,
+  // Served from /public so the site is independent of any other deployment.
+  cvUrl: '/Sando-Aleksanders-CV.pdf',
+  assetBase: '',
 };
 
 export const STATUS = {
@@ -439,7 +438,7 @@ export const EDUCATION = {
   ],
   note: 'Professional online training, not an accredited university degree.',
   experience: {
-    period: 'From 2024',
+    period: 'From May 2024',
     title: 'NONSTOP AI (founder)',
     subtitle: 'Self-directed business and project work, started after the training above began',
   },
