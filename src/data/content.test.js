@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { execFileSync } from 'node:child_process';
 import { CONTACT, EDUCATION, EXPERTISE, PROJECTS, ROLES, SITE, STATUS, TOOLS } from './content.js';
 
 const allText = JSON.stringify({ EXPERTISE, PROJECTS, ROLES, EDUCATION, TOOLS, CONTACT });
@@ -76,5 +77,16 @@ describe('structure', () => {
     expect(SITE.cvUrl.startsWith('/')).toBe(true); // served locally, not from another site
     expect(SITE.assetBase).toBe('');
     expect(SITE.headline).toBe('AI Automation | B2B Lead Generation | Web Development | Digital Marketing');
+  });
+
+  it('keeps the CV contact number identical to the site number', () => {
+    let text = '';
+    try {
+      text = execFileSync('pdftotext', ['public/Sando-Aleksanders-CV.pdf', '-'], { encoding: 'utf8' });
+    } catch {
+      return; // pdftotext unavailable: skip rather than fail on other machines
+    }
+    expect(text).toContain(SITE.phone);
+    expect(text).not.toContain('07923');
   });
 });

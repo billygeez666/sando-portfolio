@@ -21,6 +21,9 @@ check('meta description present', /<meta\s+name="description"\s+content="[^"]{80
 check('canonical present', /rel="canonical"/.test(html));
 check('Open Graph title present', /property="og:title"/.test(html));
 check('JSON-LD Person present', /"@type": "Person"/.test(html));
+check('og:image + twitter large card', /property="og:image"/.test(html) && /summary_large_image/.test(html));
+const og = readFileSync(join(dist, 'og-image.png'));
+check('og-image is 1200x630 PNG under 400 KB', og.readUInt32BE(16) === 1200 && og.readUInt32BE(20) === 630 && og.length < 400 * 1024);
 check('lang attribute', /<html lang="en-GB"/.test(html));
 
 const textFiles = files.filter((f) => /\.(html|js|css|txt|svg)$/.test(f));
