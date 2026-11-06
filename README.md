@@ -27,6 +27,8 @@ npm run check      # tests + production build + build verification
 
 ## Before going live (open items)
 
-1. **CV and evidence images** are currently referenced from the existing live site (`SITE.cvUrl`, `SITE.assetBase` in `content.js`). Copy `Sando-Aleksanders-CV.pdf` and `evidence/*.webp` into `public/` and switch both to relative paths before this build replaces the live site, otherwise they will break.
-2. Confirm the NONSTOP AI start date shown in `EDUCATION.experience`.
-3. Add a social-share image (`og:image`) if wanted.
+1. Confirm the CV phone number (the PDF shows 07923 896954; the site shows +44 7360 266496).
+2. Add a social-share image (`og:image`) if wanted.
+3. Replace the live site only after explicit approval (canonical, OG and JSON-LD URLs already point at `sando-aleksanders.netlify.app`).
+
+CV and evidence images are served from `public/` (no dependency on any other site).
