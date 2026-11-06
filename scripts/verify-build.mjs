@@ -24,6 +24,8 @@ check('JSON-LD Person present', /"@type": "Person"/.test(html));
 check('og:image + twitter large card', /property="og:image"/.test(html) && /summary_large_image/.test(html));
 const og = readFileSync(join(dist, 'og-image.png'));
 check('og-image is 1200x630 PNG under 400 KB', og.readUInt32BE(16) === 1200 && og.readUInt32BE(20) === 630 && og.length < 400 * 1024);
+const strayEvidence = files.filter((f) => /email-engine-sm|receptionist-sm/.test(f));
+check('stat charts not shipped in dist', strayEvidence.length === 0, strayEvidence.join('; '));
 check('lang attribute', /<html lang="en-GB"/.test(html));
 
 function js_has() { return textFiles.some((f) => f.endsWith('.js') && /\+44 7923 896954/.test(readFileSync(f, 'utf8')) && /tel:\+447923896954/.test(readFileSync(f, 'utf8'))); }

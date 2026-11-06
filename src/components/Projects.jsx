@@ -3,22 +3,25 @@ import { Chip, Reveal, Section, StatusBadge } from './ui.jsx';
 
 const assetUrl = (path) => (path.startsWith('http') ? path : SITE.assetBase + path);
 
-function Results({ project }) {
+function Capabilities({ project }) {
   return (
     <div>
-      <h4 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-soft">Verified results</h4>
-      <dl className="grid gap-3 sm:grid-cols-2">
-        {project.results.map((r) => (
-          <div key={r.label} className="rounded-xl border border-line bg-bg/60 p-4">
-            <dt className="sr-only">{r.label}</dt>
-            <dd>
-              <span className="block font-display text-2xl font-semibold text-white">{r.value}</span>
-              <span className="text-sm text-muted">{r.label}</span>
-            </dd>
-          </div>
+      <h4 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-soft">What it does</h4>
+      <ul className="grid gap-3 sm:grid-cols-2">
+        {project.capabilities.map((c) => (
+          <li key={c.title} className="rounded-xl border border-line bg-bg/60 p-4">
+            <p className="font-display text-base font-semibold text-white">{c.title}</p>
+            <p className="mt-1 text-sm text-muted">{c.text}</p>
+          </li>
         ))}
-      </dl>
-      {project.resultsNote && <p className="mt-3 text-xs italic text-muted">{project.resultsNote}</p>}
+      </ul>
+      {project.businessValue && (
+        <p className="mt-4 text-sm">
+          <span className="font-semibold text-white">Why it matters: </span>
+          {project.businessValue}
+        </p>
+      )}
+      {project.statusNote && <p className="mt-3 text-xs italic text-muted">{project.statusNote}</p>}
     </div>
   );
 }
@@ -26,6 +29,7 @@ function Results({ project }) {
 function Detail({ project }) {
   return (
     <div className="space-y-5 text-sm leading-relaxed">
+      <Capabilities project={project} />
       <div>
         <h4 className="mb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-soft">The problem</h4>
         <p>{project.problem}</p>
@@ -50,7 +54,6 @@ function Detail({ project }) {
           ))}
         </ul>
       </div>
-      <Results project={project} />
     </div>
   );
 }
@@ -88,7 +91,6 @@ function FeaturedCard({ project }) {
 }
 
 function CompactCard({ project }) {
-  const [first] = project.results;
   return (
     <Reveal as="article" id={`project-${project.id}`} className="card scroll-mt-24 flex flex-col p-5">
       <header className="mb-3 flex flex-wrap items-center gap-2">
@@ -96,13 +98,10 @@ function CompactCard({ project }) {
         <span className="text-xs text-muted">{project.kind}</span>
       </header>
       <h3 className="mb-2 text-lg font-semibold leading-snug">{project.title}</h3>
-      <p className="mb-4 text-sm text-muted">{project.problem}</p>
-      <p className="mb-4 rounded-lg border border-line bg-bg/60 px-3 py-2 text-sm">
-        <span className="font-semibold text-white">{first.value}.</span> <span className="text-muted">{first.label}</span>
-      </p>
+      <p className="mb-4 text-sm text-muted">{project.summary}</p>
       <details className="group mt-auto">
         <summary className="cursor-pointer list-none text-sm font-semibold text-accent-soft hover:text-white">
-          <span className="group-open:hidden">View evidence and detail +</span>
+          <span className="group-open:hidden">View detail +</span>
           <span className="hidden group-open:inline">Hide detail −</span>
         </summary>
         <div className="mt-4 border-t border-line pt-4">
@@ -121,8 +120,8 @@ export default function Projects() {
     <Section
       id="projects"
       eyebrow="Featured projects"
-      title="Proof of work, with an honest status on every project"
-      intro="Figures come from internal records, with the limits stated. Nothing here is a claim of client revenue, sales or customer numbers."
+      title="What I have built, with an honest status on every project"
+      intro="Each project shows what it does, the tools behind it and an honest status. Nothing here is a claim of client revenue, sales or customer numbers."
     >
       <ul className="mb-10 flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted" aria-label="Status key">
         {Object.entries(STATUS).map(([key, s]) => (

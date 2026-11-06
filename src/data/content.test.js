@@ -1,35 +1,43 @@
 import { describe, expect, it } from 'vitest';
 import { execFileSync } from 'node:child_process';
-import { CONTACT, EDUCATION, EXPERTISE, PROJECTS, ROLES, SITE, STATUS, TOOLS } from './content.js';
-
-const allText = JSON.stringify({ EXPERTISE, PROJECTS, ROLES, EDUCATION, TOOLS, CONTACT });
+import { ABOUT, CONTACT, EDUCATION, EXPERTISE, HERO_PILLARS, INTRO, PROJECTS, ROLES, SITE, STATUS, TOOLS } from './content.js';
 
 describe('evidence integrity', () => {
-  it('preserves the verified metrics from the original portfolio', () => {
-    const email = PROJECTS.find((p) => p.id === 'email-engine');
-    const rec = PROJECTS.find((p) => p.id === 'ai-receptionist');
-    expect(email.results[0].value).toBe('1,864');
-    expect(email.results[0].label).toContain('14 Sep – 21 Oct 2026');
-    expect(rec.results[0].value).toBe('292 ms');
-    expect(rec.results[0].label).toContain('321');
-    expect(rec.results[1].value).toBe('178 ms');
-    expect(rec.results[1].label).toContain('226');
-  });
-
-  it('keeps the original three case studies and NONSTOP AI as featured', () => {
+  it('keeps the same four featured projects', () => {
     const featured = PROJECTS.filter((p) => p.tier === 'featured').map((p) => p.id);
     expect(featured).toEqual(['email-engine', 'ai-receptionist', 'website-machine', 'nonstop-ai']);
   });
 
-  it('gives every project a valid status and full case-study fields', () => {
+  it('gives every project a valid status and a capability-led case study', () => {
     for (const p of PROJECTS) {
       expect(Object.keys(STATUS)).toContain(p.status);
-      for (const key of ['title', 'problem', 'role']) expect(p[key], `${p.id}.${key}`).toBeTruthy();
+      for (const key of ['title', 'problem', 'role', 'summary', 'businessValue', 'statusNote']) expect(p[key], `${p.id}.${key}`).toBeTruthy();
       expect(p.solution.length, `${p.id}.solution`).toBeGreaterThan(0);
       expect(p.tools.length, `${p.id}.tools`).toBeGreaterThan(0);
-      expect(p.results.length, `${p.id}.results`).toBeGreaterThan(0);
-      expect(p.resultsNote, `${p.id}.resultsNote`).toBeTruthy();
+      expect(p.capabilities.length, `${p.id}.capabilities`).toBeGreaterThanOrEqual(3);
+      expect(p.results, `${p.id} must not carry a results/metrics field`).toBeUndefined();
     }
+  });
+
+  it('describes the full email engine capability set', () => {
+    const titles = PROJECTS.find((p) => p.id === 'email-engine').capabilities.map((c) => c.title.toLowerCase()).join(' | ');
+    for (const needle of ['b2b lead generation', 'automated outreach', 'scheduled follow-ups', 'lead tracking', 'reporting']) {
+      expect(titles).toContain(needle);
+    }
+  });
+
+  it('shows no performance statistics anywhere in public content', () => {
+    const everything = JSON.stringify({ SITE, INTRO, HERO_PILLARS, ABOUT, EXPERTISE, PROJECTS, TOOLS, ROLES, EDUCATION, CONTACT });
+    expect(everything).not.toMatch(/\b\d{1,3}(,\d{3})+\b/); // 1,234-style counts
+    expect(everything).not.toMatch(/\b\d+(\.\d+)?\s?(ms|seconds|emails|lookups|calls|weeks|%)/i);
+    expect(everything).not.toMatch(/median|percentile|latency|verified case studies/i);
+  });
+
+  it('does not claim systems run continuously or serve customers', () => {
+    const projectText = JSON.stringify(PROJECTS);
+    expect(projectText).not.toMatch(/continuous|24\/7|around the clock|always[- ]on|never (goes|stops)|operating 24/i);
+    expect(PROJECTS.find((p) => p.id === 'email-engine').status).not.toBe('live');
+    expect(PROJECTS.find((p) => p.id === 'ai-receptionist').status).toBe('tested');
   });
 
   it('labels Food OS and Taxi OS as prototypes, never live', () => {
@@ -38,15 +46,16 @@ describe('evidence integrity', () => {
   });
 
   it('claims no unsupported business outcomes', () => {
+    const allText = JSON.stringify({ EXPERTISE, PROJECTS, ROLES, EDUCATION, TOOLS, CONTACT });
     expect(allText).not.toMatch(/\bguarantee|\bROI\b|\bclients? (said|say)\b|\bincorporated\b|\bLtd\b|\blimited company\b/i);
     // "testimonials" may only appear inside an explicit "not claimed" disclaimer.
     for (const m of allText.matchAll(/[^.]*testimonials?[^.]*\./gi)) expect(m[0]).toMatch(/\bNo\b[^.]*\bclaimed\b/);
     expect(allText).not.toMatch(/£\s?\d/); // no prices on a personal portfolio
   });
 
-  it('adds no results to Meta Ads work', () => {
+  it('claims no performance results for Meta Ads', () => {
     const meta = PROJECTS.find((p) => p.id === 'meta-ads');
-    expect(meta.results[0].value).toBe('No results claimed');
+    expect(meta.statusNote).toMatch(/No performance results are claimed/);
   });
 });
 
@@ -95,5 +104,7 @@ describe('structure', () => {
     }
     expect(text).toContain(SITE.phone);
     for (const o of OLD) expect(text).not.toContain(o);
+    // The CV also follows the no-statistics rule.
+    expect(text).not.toMatch(/\b\d{1,3}(,\d{3})+\b|\b\d+\s?ms\b|median|lookups|five weeks|Live internal/i);
   });
 });

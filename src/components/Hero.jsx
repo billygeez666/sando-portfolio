@@ -1,4 +1,4 @@
-import { SITE, INTRO, HERO_STATS, HERO_FACTS } from '../data/content.js';
+import { SITE, INTRO, HERO_PILLARS, HERO_FACTS } from '../data/content.js';
 import { ButtonLink, Chip, Reveal } from './ui.jsx';
 
 function Node({ title, sub, accent = false }) {
@@ -77,7 +77,7 @@ export default function Hero() {
               Download CV (PDF)
             </ButtonLink>
             <ButtonLink href="#projects" variant="secondary">
-              See the evidence
+              See the projects
             </ButtonLink>
           </div>
         </Reveal>
@@ -87,12 +87,11 @@ export default function Hero() {
         </Reveal>
       </div>
 
-      <Reveal as="ul" className="mt-14 grid gap-4 sm:grid-cols-3" delay={80} aria-label="Key verified figures">
-        {HERO_STATS.map((s) => (
-          <li key={s.label} className="card p-5">
-            <p className="font-display text-3xl font-semibold text-white">{s.value}</p>
-            <p className="mt-1 text-sm text-ink">{s.label}</p>
-            <p className="mt-1 text-xs text-muted">{s.note}</p>
+      <Reveal as="ul" className="mt-14 grid gap-4 sm:grid-cols-3" delay={80} aria-label="What I do">
+        {HERO_PILLARS.map((s) => (
+          <li key={s.title} className="card p-5">
+            <p className="font-display text-2xl font-semibold text-white">{s.title}</p>
+            <p className="mt-2 text-sm text-ink">{s.text}</p>
           </li>
         ))}
       </Reveal>

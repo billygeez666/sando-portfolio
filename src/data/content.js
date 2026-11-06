@@ -23,7 +23,7 @@ export const SITE = {
 };
 
 export const STATUS = {
-  live: { label: 'Live', hint: 'Running in production or publicly live' },
+  live: { label: 'Live', hint: 'A public page or product you can open' },
   internal: { label: 'Internal system', hint: 'Built and operated by me for my own business' },
   tested: { label: 'Tested', hint: 'Demonstrated and measured, not serving customers' },
   prototype: { label: 'Prototype', hint: 'Built and demonstrated; paused or limited' },
@@ -34,10 +34,10 @@ export const INTRO = [
   'My work covers AI voice agents, business automation, B2B lead generation, outbound campaigns, website development, social media management, paid advertising, and content production.',
 ];
 
-export const HERO_STATS = [
-  { value: '1,864', label: 'emails sent by my n8n outreach engine', note: '14 Sep – 21 Oct 2026' },
-  { value: '292 ms', label: 'median caller lookup (tested)', note: '321 measured lookups' },
-  { value: '3', label: 'verified case studies', note: 'plus 6 labelled supporting projects' },
+export const HERO_PILLARS = [
+  { title: 'Build', text: 'Websites, landing pages and the integrations behind them.' },
+  { title: 'Automate', text: 'Outreach, voice agents and back-office workflows.' },
+  { title: 'Manage', text: 'Lead tracking, content publishing and reporting.' },
 ];
 
 export const HERO_FACTS = [
@@ -171,33 +171,56 @@ export const EXPERTISE = [
 ];
 
 // Featured case studies (full detail) then supporting projects (collapsed detail).
+// Public copy describes what each system does. Verified figures are kept in a private
+// internal record and are deliberately not shown here.
 export const PROJECTS = [
   {
     id: 'email-engine',
     tier: 'featured',
-    status: 'live',
+    status: 'internal',
     kind: 'Internal system',
     title: 'Email Automation Engine',
+    summary: 'A scheduled outreach system: finds and qualifies B2B prospects, sends compliant emails and follow-ups, and tracks every lead and send.',
     problem:
-      'Outbound outreach needed to run repeatedly and reliably without anyone sending emails by hand, and without losing track of what had been sent.',
-    role: 'Designed the workflow logic, directed the AI-assisted build, tested it against execution logs, and operate it.',
+      'Outbound outreach needed to run repeatedly and reliably without anyone sending emails by hand, and without losing track of who had been contacted or why.',
+    role: 'Designed the workflow logic, directed the AI-assisted build, tested it against execution logs, and run it for my own outreach.',
+    capabilities: [
+      {
+        title: 'B2B lead generation',
+        text: 'Local businesses are sourced from Google Maps data, loaded into a database, matched to Companies House records and scored on verified website signals only.',
+      },
+      {
+        title: 'Automated outreach',
+        text: 'Approved email templates are sent through the Gmail API on a weekday schedule, with a claim gate that prevents duplicate sends.',
+      },
+      {
+        title: 'Scheduled follow-ups',
+        text: 'Follow-ups are queued automatically after a set wait, and any reply or bounce stops further messages to that contact.',
+      },
+      {
+        title: 'Lead tracking',
+        text: 'Every prospect, send, reply and suppression is recorded in Supabase (PostgreSQL), so the status of any lead can be traced end to end.',
+      },
+      {
+        title: 'Reporting and safeguards',
+        text: 'A daily run log and health checks flag failures, and the workflow pauses itself rather than sending when something looks wrong.',
+      },
+    ],
+    businessValue:
+      'Keeps outreach consistent and auditable for a one-person team: nothing is sent by hand, duplicate sends are guarded against, and there is a clear record of what happened.',
     solution: [
       'n8n workflows run on a schedule and pull eligible prospects from a Supabase (PostgreSQL) database.',
-      'Prospects are screened (including TPS/CTPS checks) and segmented before any message is queued.',
-      'Emails are sent through the Gmail API, with every send recorded in an outbox table and a daily run log.',
+      'Prospects are screened (including TPS/CTPS checks and a suppression list) and segmented before any message is queued.',
+      'Emails go out through the Gmail API, with each send recorded in an outbox table and a daily run log.',
       'Error handling and execution-log review catch failed runs so they can be investigated.',
     ],
-    tools: ['n8n', 'Supabase', 'PostgreSQL', 'Gmail API', 'Companies House', 'TPS/CTPS screening'],
-    results: [
-      { value: '1,864', label: 'emails sent, 14 Sep – 21 Oct 2026' },
-      { value: 'Reconciled', label: 'outbox and daily run-log counts match' },
-    ],
-    resultsNote: 'An activity measure, not a claim of sales, replies or client revenue.',
+    tools: ['n8n', 'Supabase', 'PostgreSQL', 'Gmail API', 'Apify', 'Companies House', 'TPS/CTPS screening'],
+    statusNote: 'An internal system I built and operate. No replies, sales or client revenue are claimed.',
     visuals: [
       {
-        path: '/evidence/email-engine-sm.webp',
-        alt: 'Chart of emails sent per day from 14 September to 21 October 2026 and a diagram of the sending workflow',
-        caption: 'Daily send counts from the outbox (aggregate) and the workflow structure. A chart and diagram, not an n8n screenshot.',
+        path: '/diagrams/email-engine-workflow.webp',
+        alt: 'Diagram of the email engine workflow: schedule trigger, daily health check, dispatch queue, claim gate, send via Gmail, record result and daily close',
+        caption: 'Workflow structure with node names simplified. A diagram, not an n8n screenshot.',
       },
     ],
   },
@@ -207,25 +230,29 @@ export const PROJECTS = [
     status: 'tested',
     kind: 'Tested implementation',
     title: 'AI Receptionist',
+    summary: 'An AI voice agent that answers calls, recognises returning callers and captures structured enquiries for follow-up.',
     problem:
       'Small businesses miss calls and lose enquiries. The goal was an AI agent that answers, recognises the caller and captures a structured enquiry.',
-    role: 'Designed the call flow, built the integrations and measured lookup performance from the logs.',
+    role: 'Designed the call flow, built the integrations and tested the lookup path against the logs.',
+    capabilities: [
+      { title: 'Answers inbound calls', text: 'A Bland AI voice agent picks up on a Twilio phone number and holds a natural conversation.' },
+      { title: 'Recognises the caller', text: 'A Supabase Edge Function looks the caller up so the agent can personalise the call.' },
+      { title: 'Captures the enquiry', text: 'Details are structured and saved to Supabase through n8n workflows, ready for follow-up.' },
+    ],
+    businessValue:
+      'Means a missed call becomes a recorded enquiry the business can act on, without hiring or staffing the phone out of hours.',
     solution: [
       'An inbound AI voice agent (Bland AI) answers on a Twilio phone number.',
       'A Supabase Edge Function looks up the caller so the agent can personalise the call.',
       'Enquiry details are captured into Supabase through n8n workflows for follow-up.',
     ],
     tools: ['Bland AI', 'Twilio', 'n8n', 'Supabase Edge Functions'],
-    results: [
-      { value: '292 ms', label: 'median lookup across all 321 measured lookups' },
-      { value: '178 ms', label: 'median for the 226 lookups that matched a caller' },
-    ],
-    resultsNote: 'A tested build, not a production service or a paid-client deployment.',
+    statusNote: 'A tested build, not a production service or a paid-client deployment.',
     visuals: [
       {
-        path: '/evidence/receptionist-sm.webp',
-        alt: 'Chart of caller lookup latency and a diagram of the AI receptionist architecture',
-        caption: 'Lookup latency from the lookup log (keep-warm pings excluded) and the architecture. A chart and diagram, not a screenshot.',
+        path: '/diagrams/receptionist-architecture.webp',
+        alt: 'Diagram of the AI receptionist: inbound call, voice agent, caller lookup, n8n workflow, Supabase and structured enquiry',
+        caption: 'Simplified architecture. A diagram, not a screenshot.',
       },
     ],
   },
@@ -235,20 +262,23 @@ export const PROJECTS = [
     status: 'live',
     kind: 'Product website system',
     title: 'Website Machine',
+    summary: 'A template system for fast, responsive one-page business websites with enquiry capture built in.',
     problem:
       'Small UK businesses need an affordable, fast website that turns visitors into enquiries, and I needed a repeatable way to produce them.',
     role: 'Designed the template system, built the sites and handle deployment.',
+    capabilities: [
+      { title: 'Repeatable templates', text: 'One template system produces tailored pages for different trades and niches.' },
+      { title: 'Built to convert', text: 'Tap-to-call and quote-request forms are part of every page.' },
+      { title: 'Fast hosting', text: 'Each site is deployed to Netlify with its own public URL.' },
+    ],
+    businessValue: 'Gives a small business a professional web presence quickly, while keeping each build consistent and cheap to maintain.',
     solution: [
       'Template-driven one-page sites and service pages, built responsive with React, Vite and Tailwind (and Astro).',
       'Enquiry capture built into each page so visitors can get in touch.',
       'Deployed to Netlify, giving each site a fast, hosted public URL.',
     ],
     tools: ['React', 'Vite', 'Tailwind CSS', 'Astro', 'Netlify'],
-    results: [
-      { value: 'Deployed', label: 'public sites live and loading' },
-      { value: 'Reusable', label: 'one template system across multiple niches' },
-    ],
-    resultsNote: 'Demonstrates front-end build and deployment. No sales or revenue figures are claimed.',
+    statusNote: 'Public pages are live. Demonstrates front-end build and deployment. No sales or revenue figures are claimed.',
     visuals: [
       {
         path: '/evidence/wm-plumbers-sm.webp',
@@ -268,9 +298,17 @@ export const PROJECTS = [
     status: 'internal',
     kind: 'Internal system · trading name',
     title: 'NONSTOP AI: business automation and AI systems',
+    summary: 'The platform behind my own projects: self-serve onboarding, payments, provisioning and a shared AI receptionist.',
     problem:
       'Small businesses often need a website, a business phone line and call handling from several different suppliers. I set out to offer these together and to automate setting them up.',
     role: 'Founder and sole builder. I designed the architecture, built the automations and own testing and operations. NONSTOP AI is a trading name I operate personally.',
+    capabilities: [
+      { title: 'Packaged offer', text: 'A website, business phone number, AI receptionist and enquiry capture, set up together.' },
+      { title: 'Self-serve onboarding', text: 'A form starts an n8n workflow that creates a Stripe Checkout session, built so one submission produces exactly one session.' },
+      { title: 'Safe provisioning', text: 'An automated provisioning workflow with an approval guard and idempotency, with Supabase as the source of truth for orders and clients.' },
+      { title: 'Reusable receptionist', text: 'One shared receptionist reused across brands rather than rebuilt for each, with changes kept small and reviewed.' },
+    ],
+    businessValue: 'Shows end-to-end ownership: product design, payments, automation, voice AI and operations in one system.',
     solution: [
       'A packaged offer: website, business phone number, an AI receptionist configured with the business’s own information, and enquiry capture.',
       'Self-serve onboarding: a Netlify function starts an n8n workflow that creates a Stripe Checkout session, built so one submission produces exactly one session.',
@@ -278,11 +316,7 @@ export const PROJECTS = [
       'One shared receptionist reused across brands rather than rebuilt for each, with changes kept small and reviewed.',
     ],
     tools: ['n8n', 'Supabase', 'Bland AI', 'Twilio', 'Stripe', 'Netlify Functions', 'React'],
-    results: [
-      { value: 'End to end', label: 'a first full provisioning run completed on a test account' },
-      { value: 'Self-assessed', label: 'July 2026 readiness review: ready to sell with minor risks' },
-    ],
-    resultsNote: 'An operating internal platform. No customer numbers, revenue or testimonials are claimed.',
+    statusNote: 'An internal platform. The provisioning flow has been tested end to end on a test account. No customer numbers, revenue or testimonials are claimed.',
     visuals: [],
   },
   {
@@ -291,8 +325,15 @@ export const PROJECTS = [
     status: 'internal',
     kind: 'Internal system',
     title: 'Lead Sourcing & Qualification Pipeline',
+    summary: 'Sources local businesses, checks them against verified signals and compliance rules, and scores each one before outreach.',
     problem: 'Outreach is only as good as the prospects behind it, and raw scraped data is noisy.',
-    role: 'Designed the pipeline stages, scoring rules and compliance gates, and operate them.',
+    role: 'Designed the pipeline stages, scoring rules and compliance gates, and run them.',
+    capabilities: [
+      { title: 'Sourcing', text: 'Apify Google Maps data feeds an ingest webhook that loads Supabase.' },
+      { title: 'Qualification', text: 'Website signals are checked before any score is assigned, and only verified signals count.' },
+      { title: 'Compliance', text: 'Companies House matching, TPS/CTPS screening and a rule that unverified email addresses are never sent to.' },
+    ],
+    businessValue: 'Keeps outreach focused on genuine prospects and keeps it compliant.',
     solution: [
       'Apify Google Maps sourcing feeds an ingest webhook, which loads Supabase.',
       'A scheduled job promotes new leads into a prospect table, and a qualifier checks website signals before any score is assigned.',
@@ -300,8 +341,7 @@ export const PROJECTS = [
       'Companies House matching, TPS/CTPS screening and a rule that unverified email addresses are never sent to.',
     ],
     tools: ['Apify', 'n8n', 'Supabase', 'pg_cron', 'Companies House', 'TPS/CTPS'],
-    results: [{ value: 'Operating', label: 'cohorts sourced for UK trades, automotive, taxi and food segments' }],
-    resultsNote: 'No conversion, sales or revenue figures are claimed.',
+    statusNote: 'An internal system. No conversion, sales or revenue figures are claimed.',
   },
   {
     id: 'food-os',
@@ -309,16 +349,22 @@ export const PROJECTS = [
     status: 'prototype',
     kind: 'Private demo',
     title: 'Food OS: restaurant and takeaway receptionist',
+    summary: 'A demo AI receptionist for restaurants and takeaways, backed by a structured knowledge base and an order log.',
     problem: 'Busy restaurants and takeaways lose orders and enquiries when the phone goes unanswered.',
     role: 'Designed the knowledge base and conversation, built the demo and the order log.',
+    capabilities: [
+      { title: 'Knowledge base', text: 'Menu, prices, hours, delivery and collection rules, allergens, FAQs and escalation rules.' },
+      { title: 'Conversation', text: 'A Bland AI conversational pathway on a dedicated demo line.' },
+      { title: 'Order log', text: 'Pretend orders are captured into a Google Sheet.' },
+    ],
+    businessValue: 'Shows how the receptionist approach adapts to a different type of business.',
     solution: [
       'A structured restaurant knowledge base: menu, prices, hours, delivery and collection rules, allergens, FAQs and escalation rules.',
       'A single-node Bland AI conversational pathway on a dedicated demo line.',
       'Pretend orders captured into a Google Sheet log.',
     ],
     tools: ['Bland AI', 'Supabase', 'Google Sheets'],
-    results: [{ value: 'Demo only', label: 'mock orders; no live orders or customers' }],
-    resultsNote: 'A prototype. Outbound outreach for this sector is paused.',
+    statusNote: 'A prototype with mock orders only. No live orders or customers.',
   },
   {
     id: 'taxi-os',
@@ -326,8 +372,15 @@ export const PROJECTS = [
     status: 'prototype',
     kind: 'Built, paused',
     title: 'Taxi OS: voice booking and outreach',
+    summary: 'A voice booking prototype for taxi firms with address validation and an idempotent booking pipeline. Currently paused.',
     problem: 'Taxi firms take bookings by phone, where missed or mis-heard details cost jobs.',
     role: 'Built the voice pathway, address service and webhook pipeline, and the sector’s outreach workflows.',
+    capabilities: [
+      { title: 'Voice booking', text: 'A Bland AI pathway on a Twilio number takes the booking details.' },
+      { title: 'Address checks', text: 'Edge Functions validate addresses, cross-checking postcodes with Google Geocoding and postcodes.io.' },
+      { title: 'Safe bookings', text: 'An idempotent booking function and an n8n webhook pipeline avoid duplicate bookings.' },
+    ],
+    businessValue: 'Targets the cost of missed or mis-heard phone bookings.',
     solution: [
       'A Bland AI voice booking pathway on a Twilio number.',
       'Supabase Edge Functions validate addresses, cross-checking postcodes via Google Geocoding and postcodes.io.',
@@ -335,8 +388,7 @@ export const PROJECTS = [
       'Taxi-sector email outreach workflows (now paused).',
     ],
     tools: ['Bland AI', 'Twilio', 'Supabase Edge Functions', 'n8n', 'Google Geocoding API'],
-    results: [{ value: 'Paused', label: 'a first booking was confirmed end to end; live rollout halted by a voice-platform defect' }],
-    resultsNote: 'A prototype that did not reach sustained live service. No customer results are claimed.',
+    statusNote: 'A prototype, currently paused after a voice-platform defect. No customer results are claimed.',
   },
   {
     id: 'roofersites',
@@ -344,16 +396,22 @@ export const PROJECTS = [
     status: 'live',
     kind: 'Niche website offer',
     title: 'Roofersites UK',
+    summary: 'A standalone landing page and details form for a roofer-focused website offer, on the Website Machine backend.',
     problem: 'UK roofers need a simple professional website without a long agency process.',
     role: 'Designed the funnel and built the page on the Website Machine backend.',
+    capabilities: [
+      { title: 'Landing page', text: 'A standalone page aimed at UK roofers.' },
+      { title: 'Order flow', text: 'A details form, a payment-link step and a thank-you page, with each order tagged by niche.' },
+      { title: 'Reused backend', text: 'Runs on the Website Machine backend rather than duplicating it.' },
+    ],
+    businessValue: 'Shows how one backend can serve several niche offers.',
     solution: [
       'A standalone landing page for roofers, with a details form feeding the existing onboarding table.',
       'A payment-link step and a thank-you page, with each order tagged by niche.',
       'Reuses the Website Machine backend rather than duplicating it.',
     ],
     tools: ['React', 'Tailwind CSS', 'Netlify', 'Stripe', 'Supabase'],
-    results: [{ value: 'Live page', label: 'funnel built and published' }],
-    resultsNote: 'No sales, customers or revenue are claimed.',
+    statusNote: 'The page is live. No sales, customers or revenue are claimed.',
   },
   {
     id: 'social-automation',
@@ -361,17 +419,23 @@ export const PROJECTS = [
     status: 'internal',
     kind: 'Internal system',
     title: 'Social Media Content Automation',
+    summary: 'Workflows that publish Reels, Stories and carousels across platforms from a reusable asset bank.',
     problem: 'Posting consistently across platforms by hand does not scale for one person.',
     role: 'Designed the posting rules and content framework, built the workflows and produce the creative.',
+    capabilities: [
+      { title: 'Reels', text: 'n8n workflows publish Reels through Buffer to Instagram, Facebook and LinkedIn, with captions routed by content type.' },
+      { title: 'Stories', text: 'A separate workflow draws from a reusable asset bank with cooldown rules and logs every post to Google Sheets.' },
+      { title: 'Carousels and statics', text: 'A call-to-action framework for static posts and a carousel routine for @nonstopai_uk.' },
+    ],
+    businessValue: 'Keeps a consistent brand presence going without posting by hand.',
     solution: [
       'n8n workflows publish Reels through Buffer to Instagram, Facebook and LinkedIn, with captions routed by content type.',
       'A separate Stories workflow draws from a reusable asset bank with cooldown rules and logs every post to Google Sheets.',
-      'A call-to-action framework for static posts and a daily carousel routine for @nonstopai_uk.',
+      'A call-to-action framework for static posts and a carousel routine for @nonstopai_uk.',
       'Brand cards composited deterministically instead of generating text inside images.',
     ],
     tools: ['n8n', 'Buffer', 'Google Drive', 'Google Sheets', 'GPT-4o', 'HeyGen', 'Runway', 'CapCut'],
-    results: [{ value: 'Operating', label: 'Reels and Stories workflows built and activated' }],
-    resultsNote: 'No audience-growth or engagement figures are claimed.',
+    statusNote: 'An internal system. No audience-growth or engagement figures are claimed.',
   },
   {
     id: 'meta-ads',
@@ -379,8 +443,15 @@ export const PROJECTS = [
     status: 'internal',
     kind: 'Internal work',
     title: 'Meta Ads Build & Conversion Tracking',
+    summary: 'Campaign structure, Pixel and Conversions API tracking, and the automation around them.',
     problem: 'Paid campaigns need clean structure and trustworthy tracking before spend is worth analysing.',
     role: 'Designed campaign structure and the tracking chain, and built the automation around it.',
+    capabilities: [
+      { title: 'Campaign structure', text: 'Separate ad sets isolate targeting as the only variable.' },
+      { title: 'Tracking', text: 'Meta Pixel plus a Conversions API purchase event driven by a payment webhook, with value and deduplication.' },
+      { title: 'Automation', text: 'n8n workflows read accounts, campaigns, insights and creatives, with a write layer that defaults to off and builds everything paused.' },
+    ],
+    businessValue: 'Gives paid campaigns clean structure and reliable measurement from day one.',
     solution: [
       'Campaigns structured with separate ad sets to isolate targeting as the only variable.',
       'Meta Pixel plus a Conversions API purchase event driven by a payment webhook, with value and deduplication.',
@@ -388,8 +459,7 @@ export const PROJECTS = [
       'Short-form video ad creative produced with AI tools and edited in CapCut.',
     ],
     tools: ['Meta Ads Manager', 'Meta Graph API', 'Conversions API', 'n8n', 'Supabase', 'CapCut'],
-    results: [{ value: 'No results claimed', label: 'this entry shows build and tracking work only' }],
-    resultsNote: 'Performance figures are shared only when they can be verified.',
+    statusNote: 'Build and tracking work only. No performance results are claimed.',
   },
 ];
 
