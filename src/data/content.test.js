@@ -79,7 +79,13 @@ describe('structure', () => {
     expect(SITE.headline).toBe('AI Automation | B2B Lead Generation | Web Development | Digital Marketing');
   });
 
-  it('keeps the CV contact number identical to the site number', () => {
+  it('uses the personal number consistently on the site, tel: link and CV', () => {
+    const OLD = ['7360 266496', '07360 266496', '447360266496', '7360266496'];
+    expect(SITE.phone).toBe('+44 7923 896954');
+    expect(SITE.phoneHref).toBe('tel:+447923896954');
+    // The NONSTOP AI business number must not appear anywhere in portfolio content.
+    const all = JSON.stringify({ SITE, CONTACT, EXPERTISE, PROJECTS, ROLES, EDUCATION, TOOLS });
+    for (const o of OLD) expect(all).not.toContain(o);
     let text = '';
     try {
       text = execFileSync('pdftotext', ['public/Sando-Aleksanders-CV.pdf', '-'], { encoding: 'utf8' });
@@ -87,6 +93,6 @@ describe('structure', () => {
       return; // pdftotext unavailable: skip rather than fail on other machines
     }
     expect(text).toContain(SITE.phone);
-    expect(text).not.toContain('07923');
+    for (const o of OLD) expect(text).not.toContain(o);
   });
 });

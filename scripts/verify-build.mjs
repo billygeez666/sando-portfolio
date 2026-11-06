@@ -26,10 +26,14 @@ const og = readFileSync(join(dist, 'og-image.png'));
 check('og-image is 1200x630 PNG under 400 KB', og.readUInt32BE(16) === 1200 && og.readUInt32BE(20) === 630 && og.length < 400 * 1024);
 check('lang attribute', /<html lang="en-GB"/.test(html));
 
+function js_has() { return textFiles.some((f) => f.endsWith('.js') && /\+44 7923 896954/.test(readFileSync(f, 'utf8')) && /tel:\+447923896954/.test(readFileSync(f, 'utf8'))); }
 const textFiles = files.filter((f) => /\.(html|js|css|txt|svg)$/.test(f));
 const secretPatterns = [/sk_live_[0-9a-zA-Z]+/, /sk_test_[0-9a-zA-Z]+/, /eyJ[A-Za-z0-9_-]{30,}\./, /AKIA[0-9A-Z]{16}/, /api[_-]?key["'\s:=]+[A-Za-z0-9]{20,}/i, /service_role/i, /bearer\s+[A-Za-z0-9._-]{20,}/i];
 const hits = textFiles.flatMap((f) => secretPatterns.filter((r) => r.test(readFileSync(f, 'utf8'))).map((r) => `${f}: ${r}`));
 check('no secret patterns in dist', hits.length === 0, hits.join('; '));
+const oldNum = textFiles.filter((f) => /7360\s?266496|447360266496/.test(readFileSync(f, 'utf8')));
+check('NONSTOP AI business number absent from dist', oldNum.length === 0, oldNum.join('; '));
+check('personal number + tel: link in bundle', js_has());
 
 const js = files.filter((f) => f.endsWith('.js'));
 const jsKb = js.reduce((n, f) => n + statSync(f).size, 0) / 1024;

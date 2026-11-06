@@ -27,7 +27,7 @@ npm run check      # tests + production build + build verification
 
 ## Before going live (open items)
 
-1. Confirm the CV phone number (the PDF shows 07923 896954; the site shows +44 7360 266496).
+1. Personal number is +44 7923 896954 (site, tel: link and CV). +44 7360 266496 belongs to the separate NONSTOP AI business site and must not appear here.
 2. Add a social-share image (`og:image`) if wanted.
 3. Replace the live site only after explicit approval (canonical, OG and JSON-LD URLs already point at `sando-aleksanders.netlify.app`).
 
